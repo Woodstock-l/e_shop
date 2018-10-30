@@ -2,7 +2,7 @@
 
 session_start();
 
-$dsn = "mysql:host=localhost; dbname=eshop";
+$dsn = "mysql:host=localhost; dbname=e_shop";
 $log = "root";
 $pwd = "";
 $attributes = [

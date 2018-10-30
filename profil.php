@@ -20,11 +20,8 @@
 
     // debug($info);
 
-<<<<<<< HEAD
     if(isset($_GET['a']) && isset($_GET['id']) && $_GET['a'] == "delete" && is_numeric($_GET['id'])) # la fonction is_numeric() me permet de vérifier que le paramètre rentré est bien un chiffre
-=======
     if(isset($_GET['m']) && isset($_GET['id']) && $_GET['m'] == "update" && is_numeric($_GET['id'])) # la fonction is_numeric() me permet de vérifier que le paramètre rentré est bien un chiffre
->>>>>>> cd3f3f8594957de55adaae93136fe79eba5eec94
     {
         $req = "SELECT * FROM membre WHERE id_membre = :id";
         $result = $pdo->prepare($req);
@@ -36,7 +33,6 @@
         {
             $membre = $result->fetch();
             
-<<<<<<< HEAD
             //debug($membre);
             
             $delete_req = "DELETE FROM membre WHERE id_membre = $membre[id_membre]";
@@ -50,8 +46,8 @@
             else
             {
                 header("location:profil.php?m=fail");  
-=======
             //debug($produit);
+            }
             
             $update_req = "UPDATE FROM membre WHERE id_membre = $membre[id_membre]";
             
@@ -64,17 +60,13 @@
             else
             {
                 header("location:modif_profil.php?m=fail");  
->>>>>>> cd3f3f8594957de55adaae93136fe79eba5eec94
             }
             
         }
         else 
         {
-<<<<<<< HEAD
             header("location:profil.php?m=fail");    
-=======
             header("location:modif_profil.php?m=fail");    
->>>>>>> cd3f3f8594957de55adaae93136fe79eba5eec94
         }
     }
     
@@ -83,11 +75,8 @@
         switch($_GET['m'])
         {
             case "success":
-<<<<<<< HEAD
             $msg .= "<div class='alert alert-success'>Votre compte a bien été supprimé.</div>";
-=======
             $msg .= "<div class='alert alert-success'>L'utilisateur a bien été supprimé.</div>";
->>>>>>> cd3f3f8594957de55adaae93136fe79eba5eec94
             break;
             case "fail":
             $msg .= "<div class='alert alert-danger'>Une erreur est survenue, veuillez réessayer.</div>";
@@ -96,18 +85,13 @@
             $msg .= "<div class='alert alert-success'>L'utilisateur a bien été mis à jour.</div>";
             break;
             default:
-<<<<<<< HEAD
             $msg .= "<div class='alert alert-warning'>Une erreur est survenue, veuillez réessayer.</div>";
-=======
             $msg .= "<div class='alert alert-warning'>A pas compris !</div>";
->>>>>>> cd3f3f8594957de55adaae93136fe79eba5eec94
             break;
         }
     }
 
-<<<<<<< HEAD
     deleteModal($info['id_membre'], $info['pseudo'], 'le membre');
-=======
     // debug($_POST);
 
     // Changement MDP
@@ -146,7 +130,6 @@
         }
     }
 // debug($info);
->>>>>>> cd3f3f8594957de55adaae93136fe79eba5eec94
 ?>
 
     <div class="starter-template">
@@ -169,7 +152,6 @@
                 <li class="list-group-item">Ville: <?= $info['ville'] ?></li>
             </ul>
             <div class="card-body">
-<<<<<<< HEAD
                 <a href="modif_profil.php?m=update" class="card-link">Modifier</a>
                 <a data-toggle='modal' data-target='#deleteModal<?= $info['id_membre'] ?>' class='card-link'> Supprimer</a>
         </div>
@@ -178,7 +160,6 @@
     <?= $msg ?>
 
     <?php require_once("inc/footer.php"); ?>
-=======
                 <a href="modif_profil.php?m=update" class="card-link">Modifier le profil</a>
                 <a href="#" class="card-link">Supprimer</a>
             </div>
@@ -225,4 +206,3 @@
         </form>
 
 <?php require_once("inc/footer.php"); ?>
->>>>>>> cd3f3f8594957de55adaae93136fe79eba5eec94
