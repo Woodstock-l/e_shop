@@ -29,10 +29,17 @@
         unset($_SESSION['panier']);
         header('location:panier.php');
     }
+
     
     if($_POST)
     {
-
+        # Possibilité pour l'utilisateur de changer la quantité directement sur la page panier
+        if(isset($_POST['modif_quant']) && $_POST['modif_quant'] != $value['quantite'])
+            {
+                
+                // $value['quantite'] = $_POST['modif_quant'];
+            }
+        
         if(isset($_POST["ajoutPanier"]))
         {
             $result = $pdo->prepare("SELECT * FROM produit WHERE id_produit = :id_produit");
@@ -72,32 +79,41 @@
                 }
             }
         }
+        if(isset($_POST['valider']) && $_POST['valider'] == "Valider le panier")
+        {
 
-        if(empty($msg)) { // tout est ok
-
-            $id_membre = $_SESSION['user']['id_membre'];
-            $montant = prixTotal();
+            if(empty($msg)) { // tout est ok
     
-            $resultat = $pdo -> exec("INSERT INTO commande  (id_membre, montant, date_enregistrement, etat) VALUES ($id_membre, $montant, NOW(), 'en cours de traitement')");
-    
-            $id_commande = $pdo -> lastInsertID(); // nous retourne l'id du dernier enregistrement
-    
-            // enregistrer dans la table detail_commande les details pour chaque produit commandé
-            foreach ($_SESSION['panier'] as $key => $value) {
-                extract($valeur);
-    
-                $resultat = $pdo -> exec("INSERT INTO detail_commande (id_commande, id_produit, quantite, prix) VALUES ($id_commande, $key, $quantite, $prix)");
-    
-                $resultat = $pdo -> exec("UPDATE produit SET stock = (stock - $quantite) WHERE id_produit = $key");
+                $id_membre = $_SESSION['user']['id_membre'];
+                $montant = prixTotal();
+        
+                $resultat = $pdo -> exec("INSERT INTO commande  (id_membre, montant, date_enregistrement, etat) VALUES ($id_membre, $montant, NOW(), 'en cours de traitement')");
+        
+                $id_commande = $pdo -> lastInsertID(); // nous retourne l'id du dernier enregistrement
+        
+                // enregistrer dans la table detail_commande les details pour chaque produit commandé
+                foreach ($_SESSION['panier'] as $key => $value) {
+                    extract($valeur);
+        
+                    $resultat = $pdo -> exec("INSERT INTO detail_commande (id_commande, id_produit, quantite, prix) VALUES ($id_commande, $key, $quantite, $prix)");
+        
+                    $resultat = $pdo -> exec("UPDATE produit SET stock = (stock - $quantite) WHERE id_produit = $key");
+                }
+        
+                $msg .= '<div class="alert alert-success">Félicitation, votre commande #' . $id_commande . ' est confirmée. Vous allez recevoir un email avec tous les détails et le suivi de votre colis !</div>';
+        
+                unset($_SESSION['panier']); //suppression du panier dans la session utilisateur
             }
-    
-            $msg .= '<div class="alert alert-success">Félicitation, votre commande #' . $id_commande . ' est confirmée. Vous allez recevoir un email avec tous les détails et le suivi de votre colis !</div>';
-    
-            unset($_SESSION['panier']); //suppression du panier dans la session utilisateur
+
         }
     }
 
-    // debug($_SESSION);
+    
+
+
+
+   debug($_POST);
+
 
 ?>
 
@@ -131,7 +147,20 @@
 
                         <td><?= $value['prix'] ?> €</td>
 
-                        <td><?= $value['quantite'] ?></td>
+                        <td> <form action="" method="post">
+                        <div class="form-group">
+                            <select class='form-control form-control-sm' name="modif_quant">
+                                <option class="selected"><?=$value['quantite']?></option>
+                            
+                                <?php for ($i=0; $i<=$produit['stock']; $i++) : ?>
+                                    <?="<option>" . $i . "</option>"?>
+                                <?php endfor ; ?>
+                            </select>
+                        </div>
+                        
+                        <button name="modif" id="modif" class="btn btn-primary" role="submit">Quantité</button>
+                        </form>
+                        </td>
 
                         <td><?= $value['quantite']*$value['prix'] ?> €</td>
                         
@@ -149,7 +178,7 @@
         </table>
         <?php if(userConnect()) : ?>
             <form action="" method="post">
-                <input type="submit" class="btn btn-primary" value="Valider le panier" name=valider>
+                <input type="submit" class="btn btn-primary" value="Valider le panier" name="valider">
             </form>
         <?php else : ?>
             <p>Vous n'êtes pas connecté.</p>
