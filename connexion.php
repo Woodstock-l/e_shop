@@ -34,7 +34,7 @@
                 // $_SESSION['user']['pseudo'] = $user['pseudo'];
                 // $_SESSION['user']['prenom'] = $user['prenom'];
 
-                foreach ($user as $key => $value) 
+                foreach ($user as $key => $value)
                 {
                     if($key != "mdp")
                     {
