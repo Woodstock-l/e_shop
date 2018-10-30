@@ -29,7 +29,7 @@
             {
                 $chemin_photo = RACINE . 'assets/uploads/admin/' . $produit['photo'];
                 
-                if(file_exists($chemin_photo) && $produit['photo'] != "default.jpg") # la fonction fil_exists() me permet de vérifier si le fichier existe bel et bien
+                if(file_exists($chemin_photo) && $produit['photo'] != "default.jpg") # la fonction file_exists() me permet de vérifier si le fichier existe bel et bien
                 {
                     unlink($chemin_photo); # la fonction unlink() me permet de supprimer un fichier
                 }

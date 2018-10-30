@@ -116,12 +116,12 @@
             }
             else 
             {
-                $msg .= "<div class='alert alert-danger'>Aucune correspondance en base de données.</div>";
+                $msg .= "<div class='alert alert-danger'>Aucune correspondance en base de donnée.</div>";
             }
         }
         else 
         {
-            $msg .= "<div class='alert alert-danger'>Aucune correspondance en base de données.</div>";
+            $msg .= "<div class='alert alert-danger'>Aucune correspondance en base de donnée.</div>";
         } 
 
 

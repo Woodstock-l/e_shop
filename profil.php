@@ -20,6 +20,60 @@
 
     // debug($info);
 
+    if(isset($_GET['a']) && isset($_GET['id']) && $_GET['a'] == "delete" && is_numeric($_GET['id'])) # la fonction is_numeric() me permet de vérifier que le paramètre rentré est bien un chiffre
+    {
+        $req = "SELECT * FROM membre WHERE id_membre = :id";
+        $result = $pdo->prepare($req);
+        $result->bindValue(':id', $_GET['id'], PDO::PARAM_INT);
+        $result->execute();
+        // debug($result);
+
+        if($result->rowCount() == 1)
+        {
+            $membre = $result->fetch();
+            
+            //debug($membre);
+            
+            $delete_req = "DELETE FROM membre WHERE id_membre = $membre[id_membre]";
+            
+            $delete_result = $pdo->exec($delete_req);
+            
+            if($delete_result)
+            {
+                header("location:profil.php?m=success");
+            }
+            else
+            {
+                header("location:profil.php?m=fail");  
+            }
+            
+        }
+        else 
+        {
+            header("location:profil.php?m=fail");    
+        }
+    }
+    
+    if(isset($_GET['m']) && !empty($_GET['m']))
+    {
+        switch($_GET['m'])
+        {
+            case "success":
+            $msg .= "<div class='alert alert-success'>Votre compte a bien été supprimé.</div>";
+            break;
+            case "fail":
+            $msg .= "<div class='alert alert-danger'>Une erreur est survenue, veuillez réessayer.</div>";
+            break;
+            case "update":
+            $msg .= "<div class='alert alert-success'>L'utilisateur a bien été mis à jour.</div>";
+            break;
+            default:
+            $msg .= "<div class='alert alert-warning'>Une erreur est survenue, veuillez réessayer.</div>";
+            break;
+        }
+    }
+
+    deleteModal($info['id_membre'], $info['pseudo'], 'le membre');
 ?>
 
     <div class="starter-template">
@@ -28,7 +82,7 @@
             <img class="card-img-top img-thumbnail rounded mx-auto d-block" src="<?=URL?>/assets/uploads/user/default.png" alt="Card image cap" style="width:25%;">
             <div class="card-body">
                 <h5 class="card-title">Bonjour <?= $info['pseudo'] ?></h5>
-                <p class="card-text">Nous sommes râvi de vous revoir sur notre plateforme.</p>
+                <p class="card-text">Nous sommes ravis de vous revoir sur notre plateforme.</p>
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">Prénom: <?= $info['prenom'] ?></li>
@@ -42,10 +96,11 @@
                 <li class="list-group-item">Ville: <?= $info['ville'] ?></li>
             </ul>
             <div class="card-body">
-                <a href="#" class="card-link">Action 1</a>
-                <a href="#" class="card-link">Action 2</a>
-            </div>
+                <a href="modif_profil.php?m=update" class="card-link">Modifier</a>
+                <a data-toggle='modal' data-target='#deleteModal<?= $info['id_membre'] ?>' class='card-link'> Supprimer</a>
         </div>
     </div>
 
-<?php require_once("inc/footer.php"); ?>
+    <?= $msg ?>
+
+    <?php require_once("inc/footer.php"); ?>
