@@ -124,7 +124,6 @@
             $msg .= "<div class='alert alert-danger'>Aucune correspondance en base de données.</div>";
         } 
 
-
     }
 
     $reference = (isset($modif_produit)) ? $modif_produit['reference'] : "";

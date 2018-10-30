@@ -70,6 +70,7 @@ $contenu .= "<div class='table-responsive'><table class='table table-striped tab
 for($i= 0; $i < $result->columnCount(); $i++)
 {
     $colonne = $result->getColumnMeta($i);
+<<<<<<< HEAD
     
     if($colonne['name'] =="mdp")
         {
@@ -80,6 +81,11 @@ for($i= 0; $i < $result->columnCount(); $i++)
             $contenu .= "<th scope='col'>" . ucfirst(str_replace('_', ' ', $colonne['name'])) . "</th>";
         }
 }   
+=======
+    $contenu .= "<th scope='col'>" . ucfirst(str_replace('_', ' ', $colonne['name'])) . "</th>";
+}
+    
+>>>>>>> cd3f3f8594957de55adaae93136fe79eba5eec94
 $contenu .= "<th colspan='2'>Actions</th></tr></thead><tbody>";
     
 // debug($membres);
@@ -89,6 +95,7 @@ foreach($membres as $membre)
     $contenu .= "<tr>";
         foreach ($membre as $key => $value) 
         {
+<<<<<<< HEAD
             if($key =="mdp")
             {
                 continue;
@@ -97,6 +104,9 @@ foreach($membres as $membre)
             {
             $contenu .= "<td>" . $value . "</td>";
             }    
+=======
+            $contenu .= "<td>" . $value . "</td>";    
+>>>>>>> cd3f3f8594957de55adaae93136fe79eba5eec94
         }
         $contenu .= "<td><a href='formulaire_user.php?id=" . $membre['id_membre'] . "'><i class='fas fa-pen'></i></a></td>";
     

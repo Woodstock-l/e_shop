@@ -20,7 +20,11 @@
 
     // debug($info);
 
+<<<<<<< HEAD
     if(isset($_GET['a']) && isset($_GET['id']) && $_GET['a'] == "delete" && is_numeric($_GET['id'])) # la fonction is_numeric() me permet de vérifier que le paramètre rentré est bien un chiffre
+=======
+    if(isset($_GET['m']) && isset($_GET['id']) && $_GET['m'] == "update" && is_numeric($_GET['id'])) # la fonction is_numeric() me permet de vérifier que le paramètre rentré est bien un chiffre
+>>>>>>> cd3f3f8594957de55adaae93136fe79eba5eec94
     {
         $req = "SELECT * FROM membre WHERE id_membre = :id";
         $result = $pdo->prepare($req);
@@ -32,6 +36,7 @@
         {
             $membre = $result->fetch();
             
+<<<<<<< HEAD
             //debug($membre);
             
             $delete_req = "DELETE FROM membre WHERE id_membre = $membre[id_membre]";
@@ -45,12 +50,31 @@
             else
             {
                 header("location:profil.php?m=fail");  
+=======
+            //debug($produit);
+            
+            $update_req = "UPDATE FROM membre WHERE id_membre = $membre[id_membre]";
+            
+            $update_result = $pdo->exec($update_req);
+            
+            if($update_result)
+            {
+                header("location:modif_profil.php?m=success");
+            }
+            else
+            {
+                header("location:modif_profil.php?m=fail");  
+>>>>>>> cd3f3f8594957de55adaae93136fe79eba5eec94
             }
             
         }
         else 
         {
+<<<<<<< HEAD
             header("location:profil.php?m=fail");    
+=======
+            header("location:modif_profil.php?m=fail");    
+>>>>>>> cd3f3f8594957de55adaae93136fe79eba5eec94
         }
     }
     
@@ -59,7 +83,11 @@
         switch($_GET['m'])
         {
             case "success":
+<<<<<<< HEAD
             $msg .= "<div class='alert alert-success'>Votre compte a bien été supprimé.</div>";
+=======
+            $msg .= "<div class='alert alert-success'>L'utilisateur a bien été supprimé.</div>";
+>>>>>>> cd3f3f8594957de55adaae93136fe79eba5eec94
             break;
             case "fail":
             $msg .= "<div class='alert alert-danger'>Une erreur est survenue, veuillez réessayer.</div>";
@@ -68,18 +96,63 @@
             $msg .= "<div class='alert alert-success'>L'utilisateur a bien été mis à jour.</div>";
             break;
             default:
+<<<<<<< HEAD
             $msg .= "<div class='alert alert-warning'>Une erreur est survenue, veuillez réessayer.</div>";
+=======
+            $msg .= "<div class='alert alert-warning'>A pas compris !</div>";
+>>>>>>> cd3f3f8594957de55adaae93136fe79eba5eec94
             break;
         }
     }
 
+<<<<<<< HEAD
     deleteModal($info['id_membre'], $info['pseudo'], 'le membre');
+=======
+    // debug($_POST);
+
+    // Changement MDP
+    if($_POST)
+    {
+        if(isset($_SESSION['id_membre']) && isset($_POST['mdp']) && isset($_POST['new_mdp']) && isset($_POST['verif_new_mdp']))
+		{
+			$verif_mdp=password_verify($_POST['mdp'], $_SESSION['id_membre']);
+            $req=$pdo->prepare('SELECT id FROM membres WHERE id = :id AND mdp = :mdp');
+            $req->bindValue(":id", $_POST['id'], PDO::PARAM_INT);
+            $req->bindValue(":mdp", $verif_mdp, PDO::PARAM_STR);
+			$req->execute();
+			$resultat=$req->fetch();
+
+			if(!$resultat)
+			{
+				$msg .= 'Ce n\'est pas votre mot de passe';
+			}
+			elseif (empty($_POST['new_mdp']))
+			{
+				$msg .= 'Le nouveau mot de passe n\'a pas été renseigné.';
+			}
+			elseif ($_POST['new_mdp'] != $_POST['verif_new_mdp'])
+			{
+				$msg .= 'Les mots de passe ne correspondent pas.';
+			}
+			else
+			{
+				$new_verif_mdp=password_verify($_POST['new_mdp'], $_SESSION['id_membre']);
+                $req=$pdo->prepare('UPDATE membre SET mdp = :mdp WHERE id = :id');
+                $req->bindValue(":id", $_POST['id'], PDO::PARAM_INT);
+                $req->bindValue(":mdp", $new_verif_mdp, PDO::PARAM_STR);
+				$req->execute();
+				$msg .= 'Le mot de passe a été changé.';
+			}
+        }
+    }
+// debug($info);
+>>>>>>> cd3f3f8594957de55adaae93136fe79eba5eec94
 ?>
 
     <div class="starter-template">
         <h1><?= $page ?></h1>
         <div class="card">
-            <img class="card-img-top img-thumbnail rounded mx-auto d-block" src="<?=URL?>/assets/uploads/user/default.png" alt="Card image cap" style="width:25%;">
+            <img class="card-img-top img-thumbnail rounded mx-auto d-block" src="<?=URL?>assets/uploads/user/<?= $info['photo'] ?>" alt="Card image cap" style="width:25%;">
             <div class="card-body">
                 <h5 class="card-title">Bonjour <?= $info['pseudo'] ?></h5>
                 <p class="card-text">Nous sommes ravis de vous revoir sur notre plateforme.</p>
@@ -96,6 +169,7 @@
                 <li class="list-group-item">Ville: <?= $info['ville'] ?></li>
             </ul>
             <div class="card-body">
+<<<<<<< HEAD
                 <a href="modif_profil.php?m=update" class="card-link">Modifier</a>
                 <a data-toggle='modal' data-target='#deleteModal<?= $info['id_membre'] ?>' class='card-link'> Supprimer</a>
         </div>
@@ -104,3 +178,51 @@
     <?= $msg ?>
 
     <?php require_once("inc/footer.php"); ?>
+=======
+                <a href="modif_profil.php?m=update" class="card-link">Modifier le profil</a>
+                <a href="#" class="card-link">Supprimer</a>
+            </div>
+
+            <!-- Modification mdp -->
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Modifier le mot de passe</button>
+                        </h5>
+                    </div>
+
+                <form action="" method="post">
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body">
+
+                            <?= $msg ?>
+
+                            <!-- Ancien mdp -->
+                            <div class="form-group">
+                                <label for="mdp">Ancien mot de passe :</label>
+                                <input type="password" class="form-control" id="mdp" name="mdp" placeholder="Taper votre ancien mot de passe">
+                            </div>
+
+                            <!-- Nouveau mdp -->
+                            <div class="form-group">
+                                <label for="new_mdp">Nouveau mot de passe :</label>
+                                <input type="password" class="form-control" id="new_mdp" name="new_mdp" placeholder="Taper votre nouveau mot de passe">
+                            </div>
+
+                            <!-- Validation nouveau mdp -->
+                            <div class="form-group">
+                                <label for="verif_new_mdp">Nouveau mot de passe :</label>
+                                <input type="password" class="form-control" id="verif_new_mdp" name="verif_new_mdp" placeholder="Taper encore votre nouveau mot de passe">
+                            </div>
+
+                            <!-- Bouton validation -->
+                            <a href="profil.php?a=update_mdp"><button type="submit" class="btn btn-primary">Valider</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+<?php require_once("inc/footer.php"); ?>
+>>>>>>> cd3f3f8594957de55adaae93136fe79eba5eec94
